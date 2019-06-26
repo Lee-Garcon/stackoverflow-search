@@ -109,11 +109,13 @@ def main():
     query_string = p.quote_plus(search_string)
     search_r = requests.get("https://stackoverflow.com/search?q=%s" % query_string)
     search_soup = bs4.BeautifulSoup(search_r.text, "html.parser")
+
     surrounding_div = search_soup.find_all("div", "question-summary search-result")[0]
-    votes = search_soup.find("span", "vote-count-post ").find("strong").text
+    assert surrounding_div != None
+    votes = surrounding_div.find("span").find("strong").text
     try:
         answers = (
-            search_soup.find("div", "status answered-accepted").find("strong").text
+            surrounding_div.find("div", "status answered-accepted").find("strong").text
         )
     except AttributeError:
         answers = None
