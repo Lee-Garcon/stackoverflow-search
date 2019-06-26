@@ -1,3 +1,5 @@
+
+
 from setuptools import setup
 
 setup(
@@ -5,7 +7,7 @@ setup(
     version="0.1.0",
     packages=["so_search"],
     entry_points={
-        "console_scripts": ["so-search = stackoverflow_search.__main__:main"]
+        "console_scripts": ["so-search=so_search.__main__:main"]
     },
     install_requires=["requests", "bs4"],
 )
