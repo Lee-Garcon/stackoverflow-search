@@ -2,7 +2,7 @@ import requests
 import urllib.parse as p
 import bs4
 import argparse
-
+import textwrap
 
 CLEAR = "\033[0m"
 QUESTION = "\033[95m"
@@ -56,7 +56,8 @@ def parse_p(tag):
             else:
                 l.append(str(x.string))
 
-    return "".join(l)
+    retval = "".join(l)
+    return retval
 
 
 def parse_so_text(block):
@@ -64,7 +65,7 @@ def parse_so_text(block):
     for tag in block:
         if tag.name == "p":
             # normal text
-            l.append(parse_p(tag))
+            l.append(wrap(parse_p(tag)))
         elif tag.name == "pre":
             # code
             l.append(code_to_string(tag.find("code")))
@@ -80,6 +81,7 @@ def pretty_print_string(string):
             counter = 0
         if c == ' ':
             last_space.append(i)
+            counter += 1
         else:
             if counter < 80:
                 counter += 1
@@ -92,6 +94,10 @@ def pretty_print_string(string):
                     l.insert(i+1, '\n')
                     counter = 0
     return "".join(l)
+
+def wrap(string):
+    l = textwrap.wrap(string, 80)
+    return '\n'.join(l)
 
 
 def main():
@@ -141,16 +147,23 @@ def main():
     try:
         answer_block = answer_soup.find_all("div", "answer accepted-answer")[0]
     except:
-        answer_block = answer_soup.find_all("div", "answer")[0]
+        try:
+            answer_block = answer_soup.find_all("div", "answer")[0]
+        except:
+            print()
+            print(question_text)
+            print()
+            print(CYAN + 'NO ANSWERS' + CLEAR)
+            return
     answer_votes = answer_block.find("div", {"itemprop": "upvoteCount"})["data-value"]
     answer_text = parse_so_text(answer_block.find("div", "post-text"))
 
     print()
-    print(pretty_print_string(question_text))
+    print(question_text)
     print()
     print(CYAN + "ANSWER: %s UPVOTES" % answer_votes + CLEAR)
     print()
-    print(pretty_print_string(answer_text))
+    print(answer_text)
     print()
 
 if __name__ == "__main__":
