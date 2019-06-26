@@ -21,4 +21,4 @@ Note that if you installed python 2 and pip before you installed python3, instea
     
 # Usage
 
-    so-search
+    so-search [-h] Question
