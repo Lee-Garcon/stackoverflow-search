@@ -1,0 +1,3 @@
+[console_scripts]
+so-search = stackoverflow_search.__main__:main
+
