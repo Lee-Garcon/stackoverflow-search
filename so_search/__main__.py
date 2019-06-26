@@ -100,7 +100,7 @@ def main():
         prog="so-search", description="Search stackoverflow.com for a question."
     )
     parser.add_argument(
-        "question", metavar="Q", type=str, help="question to be searched"
+        "question", metavar="Question", type=str, help="question to be searched"
     )
 
     args = vars(parser.parse_args())
@@ -151,7 +151,7 @@ def main():
     print(CYAN + "ANSWER: %s UPVOTES" % answer_votes + CLEAR)
     print()
     print(pretty_print_string(answer_text))
-
+    print()
 
 if __name__ == "__main__":
     main()
